@@ -1,0 +1,46 @@
+version: 2
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test-3.7
+      - test-3.6
+      - test-2.7
+jobs:
+  test-3.7: &test-template
+    docker:
+      - image: circleci/python:3.7
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install Open Jdk 8
+          command: |
+            sudo apt-get install openjdk-8-jdk
+            JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+            PATH=$JAVA_HOME/bin:$PATH
+      - run:
+          name: Install nvm and node
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+            nvm install 8.10
+            npm --version
+            node --version
+      - run:
+          name: Install code
+          command: |
+            make init
+      - run:
+          name: run tests
+          command: |
+            make pr
+            pytest -vv tests/integration
+
+  test-3.6:
+    <<: *test-template
+    docker:
+      - image: circleci/python:3.6
+  test-2.7:
+    <<: *test-template
+    docker:
+      - image: circleci/python:2.7
