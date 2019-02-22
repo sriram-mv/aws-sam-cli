@@ -47,14 +47,14 @@ jobs:
             mkdir -p ./venv
             virtualenv ./venv
             . venv/bin/activate
-            make init
+            sudo make init
             samdev --version
       - run:
           name: run tests
           command: |
             . venv/bin/activate
-            make pr
-            pytest -vv tests/integration
+            sudo make pr
+            sudo make integ-test
 
   test-3.6:
     <<: *test-template
