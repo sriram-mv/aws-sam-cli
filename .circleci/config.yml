@@ -34,10 +34,14 @@ jobs:
       - run:
           name: Install code
           command: |
+            mkdir -p ./venv
+            virtualenv ./venv
+            . venv/bin/activate
             make init
       - run:
           name: run tests
           command: |
+            . venv/bin/activate
             make pr
             pytest -vv tests/integration
 
