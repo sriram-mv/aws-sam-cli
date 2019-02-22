@@ -48,6 +48,7 @@ jobs:
             virtualenv ./venv
             . venv/bin/activate
             make init
+            samdev --version
       - run:
           name: run tests
           command: |
