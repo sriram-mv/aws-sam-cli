@@ -9,12 +9,15 @@ from unittest import TestCase
 import boto3
 from pathlib import Path
 
+from tests.integration.utils.boto_integ_base import PatchBotoIntegBase
+
 S3_SLEEP = 3
 
 
-class PublishAppIntegBase(TestCase):
+class PublishAppIntegBase(PatchBotoIntegBase):
     @classmethod
     def setUpClass(cls):
+
         cls.region_name = os.environ.get("AWS_DEFAULT_REGION")
         cls.pre_created_bucket = os.environ.get("AWS_S3", False)
         cls.bucket_name = cls.pre_created_bucket if cls.pre_created_bucket else str(uuid.uuid4())

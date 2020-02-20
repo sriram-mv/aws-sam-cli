@@ -1,11 +1,13 @@
 import os
 from unittest import TestCase
 
+from tests.integration.utils.boto_integ_base import PatchBotoIntegBase
 
-class DeployIntegBase(TestCase):
+
+class DeployIntegBase(PatchBotoIntegBase):
     @classmethod
     def setUpClass(cls):
-        pass
+        super(DeployIntegBase, cls).setUpClass()
 
     def setUp(self):
         super(DeployIntegBase, self).setUp()
