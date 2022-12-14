@@ -69,7 +69,7 @@ cd src
 if [ "$CI_OVERRIDE" = "1" ]; then
     echo "Updating samcli.spec with CI build"
     sed -i.bak "s/'sam'/'sam-dev'/g" installer/pyinstaller/samcli.spec
-    sed -i.bak "s/'\/usr\/local\/lib\/libcrypt.so.2', //g" installer/pyinstaller/samcli.spec
+    sed -i.bak "s/('\/usr\/local\/lib\/libcrypt.so.2', '.')//g" installer/pyinstaller/samcli.spec
     rm installer/pyinstaller/samcli.spec.bak
 elif [ "$is_nightly" = "true" ]; then
     echo "Updating samcli.spec with nightly/beta build"
