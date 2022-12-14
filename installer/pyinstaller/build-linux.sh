@@ -21,6 +21,11 @@ else
     is_nightly="false"
 fi
 
+if [ "$CI_OVERRIDE" = "1" ]; then
+  $build_folder="aws-sam-cli-dev"
+  $build_binary_name="sam-dev"
+fi
+
 set -eu
 
 if ! [ "$CI_OVERRIDE" = "1" ]; then
@@ -68,7 +73,7 @@ echo "Building Binary"
 cd src
 if [ "$CI_OVERRIDE" = "1" ]; then
     echo "Updating samcli.spec with CI build"
-    sed -i.bak "s/'sam'/'sam-dev'/g" installer/pyinstaller/samcli.spec
+    sed -i.bak "s/'sam'/'$build_binary_name'/g" installer/pyinstaller/samcli.spec
     sed -i.bak "s/('\/usr\/local\/lib\/libcrypt.so.2', '.')//g" installer/pyinstaller/samcli.spec
     rm installer/pyinstaller/samcli.spec.bak
 elif [ "$is_nightly" = "true" ]; then
@@ -96,8 +101,8 @@ chmod 755 pyinstaller-output/install
 
 if [ "$CI_OVERRIDE" = "1" ]; then
     echo "Updating install script with CI build"
-    sed -i.bak "s/\/usr\/local\/aws-sam-cli/\/usr\/local\/aws-sam-cli-dev/g" pyinstaller-output/install
-    sed -i.bak 's/EXE_NAME=\"sam\"/EXE_NAME=\"sam-dev\"/g' pyinstaller-output/install
+    sed -i.bak "s/\/usr\/local\/aws-sam-cli/\/usr\/local\/$build_folder/g" pyinstaller-output/install
+    sed -i.bak 's/EXE_NAME=\"sam\"/EXE_NAME=\"'$build_binary_name'\"/g' pyinstaller-output/install
     rm pyinstaller-output/install.bak
 elif [ "$is_nightly" = "true" ]; then
     echo "Updating install script with nightly/beta build"
