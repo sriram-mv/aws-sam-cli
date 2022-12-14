@@ -18,6 +18,9 @@ jobs:
           python-version: "3.7"
       - run: chmod +x ./installer/pyinstaller/build-linux.sh
       - run: CI_OVERRIDE=1 ./installer/pyinstaller/build-linux.sh
+      - run: ls -ltra
+      - run: ls -ltra .build
+      - run: ls -ltra .build/output
       - uses: actions/upload-artifact@v3
         with:
           name: pyinstaller-output
