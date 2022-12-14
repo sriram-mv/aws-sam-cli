@@ -17,20 +17,8 @@ jobs:
         with:
           python-version: "3.7"
       - run: chmod +x ./installer/pyinstaller/build-linux.sh
-      - run: CI_OVERRIDE=1 ./installer/pyinstaller/build-linux.sh
-      - run: ls -ltra
-      - run: ls -ltra .build
-      - run: ls -ltra .build/output
+      - run: CI_OVERRIDE=1 ./installer/pyinstaller/build-linux.sh aws-sam-cli-linux-x86_64.zip
       - uses: actions/upload-artifact@v3
         with:
-          name: pyinstaller-output
-          path: .build/pyinstaller_output.log
-      - uses: actions/upload-artifact@v3
-        with:
-          name: pyinstaller-warnings
-          path: .build/src/build/samcli/warn-samcli.txt
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: pyinstaller-spec
-          path: .build/src/__main__.spec
+          name: pyinstaller-zip
+          path: .build/output/aws-sam-cli-linux-x86_64.zip
