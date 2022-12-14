@@ -3,7 +3,7 @@ name: Validate Pyinstaller Build
 on:
   push:
     branches:
-      - "pyinstaller_validate_gha"
+      - "py_installer_gha_ci"
 
 jobs:
   build:
