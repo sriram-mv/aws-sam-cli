@@ -16,8 +16,15 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.7"
-      - run: chmod +x ./installer/pyinstaller/build-linux.sh
-      - run: CI_OVERRIDE=1 ./installer/pyinstaller/build-linux.sh aws-sam-cli-linux-x86_64.zip
+      - name: Build PyInstaller
+        run: |
+          chmod +x ./installer/pyinstaller/build-linux.sh
+          CI_OVERRIDE=1 ./installer/pyinstaller/build-linux.sh aws-sam-cli-linux-x86_64.zip
+      - name: Basic tests for PyInstaller
+        run: |
+          unzip .build/output/aws-sam-cli-linux-x86_64.zip -d sam-installation
+          ./sam-installation/install
+          sam-dev --version
       - uses: actions/upload-artifact@v3
         with:
           name: pyinstaller-zip
