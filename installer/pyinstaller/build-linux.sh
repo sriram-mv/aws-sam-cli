@@ -90,7 +90,10 @@ cat installer/pyinstaller/samcli.spec
 
 mkdir pyinstaller-output
 dist_folder="sam"
-if [ "$is_nightly" = "true" ]; then
+if [ "$CI_OVERRIDE" = "1" ]; then
+    echo "using dist_folder with CI build"
+    dist_folder=$build_binary_name
+elif [ "$is_nightly" = "true" ]; then
     echo "using dist_folder with nightly/beta build"
     dist_folder=$build_binary_name
 fi
