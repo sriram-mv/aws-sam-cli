@@ -49,9 +49,9 @@ if ! [ "$CI_OVERRIDE" = "1" ]; then
   ./configure --enable-shared
   make -j8
   make install
+  ldconfig
   cd ..
 fi
-ldconfig
 
 echo "Installing Python Libraries"
 python3 -m venv venv
