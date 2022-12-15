@@ -16,5 +16,4 @@ datas = (
     + hooks.collect_all("cfnlint", include_py_files=True)[0]
     + hooks.collect_all("jschema_to_python", include_py_files=True)[0]
     + hooks.collect_data_files("text_unidecode")
-    + hooks.collect_data_files("cfnlint")
 )
