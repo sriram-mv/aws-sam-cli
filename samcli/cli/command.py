@@ -1,12 +1,13 @@
 """
 Base classes that implement the CLI framework
 """
-
+import inspect
 import logging
 import importlib
 from collections import OrderedDict
 
 import click
+from click import HelpFormatter, Context
 
 logger = logging.getLogger(__name__)
 
@@ -103,6 +104,114 @@ class BaseCommand(click.MultiCommand):
             commands[cmd_name] = pkg_name
 
         return commands
+
+    def format_options(self, ctx: Context, formatter: HelpFormatter) -> None:
+        self.format_commands(ctx, formatter)
+        opts = []
+        for param in self.get_params(ctx):
+            rv = param.get_help_record(ctx)
+            if rv is not None:
+                opts.append(rv)
+
+        if opts:
+            with formatter.section(click.style("Global Options", bold=True)):
+                formatter.write_dl(opts)
+
+    @staticmethod
+    def format_help_str_command(help_text, limit: int = 45) -> str:
+        # TODO(sriram-mv): do something with limit for indentation.
+
+        return help_text.strip()
+
+    def format_commands(self, ctx, formatter):
+        formatter.write_paragraph()
+        # TODO(sriram-mv): Fix column spacing to be more generic and clean this up
+        # TODO(sriram-mv): Create overall structure with an overview section to set indentation.
+        # TODO(sriram-mv): Clean this up and make it modular.
+        with formatter.section(click.style("Create an App!", bold=True)):
+            formatter.write(click.style("\n"))
+            formatter.write_dl(
+                [
+                    ("init", BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("init"))),
+                ],
+            )
+
+        with formatter.section(click.style("Develop your app!", bold=True)):
+            formatter.write(click.style("\n"))
+            formatter.write_dl(
+                [
+                    (
+                        "build",
+                        BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("build")),
+                    ),
+                    (
+                        "local",
+                        BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("local")),
+                    ),
+                    (
+                        "validate",
+                        BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("validate")),
+                    ),
+                ],
+            )
+
+        with formatter.section(
+            click.style("Develop your app in the Cloud!", bold=True)
+            + click.style("  *NEW*", italic=True, bold=True, blink=True, fg="bright_yellow")
+        ):
+            formatter.write(click.style("\n"))
+            formatter.write_dl(
+                [
+                    ("sync", BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("sync"))),
+                ],
+            )
+
+        with formatter.section(click.style("Deploy your app to the Cloud and take Actions!", bold=True)):
+            formatter.write(click.style("\n"))
+            formatter.write_dl(
+                [
+                    (
+                        "package",
+                        BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("package")),
+                    ),
+                    (
+                        "deploy",
+                        BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("deploy")),
+                    ),
+                    (
+                        "delete",
+                        BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("delete")),
+                    ),
+                    (
+                        "publish",
+                        BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("publish")),
+                    ),
+                    ("list", BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("list"))),
+                ]
+            )
+
+        with formatter.section(click.style("Monitor your app!", bold=True)):
+            formatter.write(click.style("\n"))
+            formatter.write_dl(
+                [
+                    ("logs", BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("logs"))),
+                    (
+                        "traces",
+                        BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("traces")),
+                    ),
+                ],
+            )
+
+        with formatter.section(click.style("Operationalize your app with CI/CD!", bold=True)):
+            formatter.write(click.style("\n"))
+            formatter.write_dl(
+                [
+                    (
+                        "pipeline",
+                        BaseCommand.format_help_str_command(_SAM_CLI_COMMAND_SHORT_HELP.get("pipeline")),
+                    ),
+                ],
+            )
 
     def list_commands(self, ctx):
         """
