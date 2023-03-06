@@ -246,7 +246,7 @@ def do_cli(  # pylint: disable=too-many-locals, too-many-statements
 
     LOG.debug("'build' command is called")
     if cached:
-        LOG.info("Starting Build use cache")
+        LOG.info("Starting Build with caching")
     if use_container:
         LOG.info("Starting Build inside a container")
 

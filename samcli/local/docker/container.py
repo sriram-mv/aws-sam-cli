@@ -1,6 +1,7 @@
 """
 Representation of a generic Docker container
 """
+import json
 import logging
 import os
 import socket
@@ -17,6 +18,7 @@ from samcli.lib.utils.tar import extract_tarfile
 
 from .exceptions import ContainerNotStartableException
 from .utils import NoFreePortsError, find_free_port, to_posix_path
+from rich.pretty import pprint
 
 LOG = logging.getLogger(__name__)
 
@@ -294,6 +296,7 @@ class Container:
             data=event.encode("utf-8"),
             timeout=(self.RAPID_CONNECTION_TIMEOUT, None),
         )
+        #pprint(json.loads(resp.content))
         stdout.write(resp.content)
 
     def wait_for_result(self, full_path, event, stdout, stderr, start_timer=None):
