@@ -30,6 +30,7 @@ _SAM_CLI_COMMAND_PACKAGES = [
     "samcli.commands.pipeline.pipeline",
     "samcli.commands.list.list",
     "samcli.commands.docs",
+    "samcli.commands.completion",
     # We intentionally do not expose the `bootstrap` command for now. We might open it up later
     # "samcli.commands.bootstrap",
 ]
@@ -140,6 +141,17 @@ class BaseCommand(click.MultiCommand):
                         RowDefinition(
                             name="docs",
                             text=SAM_CLI_COMMANDS.get("docs", ""),
+                            extra_row_modifiers=[HighlightNewRowNameModifier()],
+                        )
+                    ]
+                )
+
+            with formatter.section("Customize"):
+                formatter.write_rd(
+                    [
+                        RowDefinition(
+                            name="completion",
+                            text=SAM_CLI_COMMANDS.get("completion", ""),
                             extra_row_modifiers=[HighlightNewRowNameModifier()],
                         )
                     ]

@@ -16,4 +16,5 @@ SAM_CLI_COMMANDS = {
     "pipeline": "Manage the continuous delivery of your AWS serverless application.",
     "list": "Fetch the state of your AWS serverless application.",
     "docs": "Launch the AWS SAM CLI documentation in a browser.",
+    "completion": "Setup shell completion for AWS SAM CLI.",
 }
